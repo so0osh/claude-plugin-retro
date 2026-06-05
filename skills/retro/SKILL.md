@@ -15,7 +15,7 @@ Do NOT produce a findings document and stop. Work through all 7 steps. Write the
 
 ## CRITICAL: Skill file updates require explicit user approval
 
-Do NOT update any skill files (including files under `~/.claude/plugins/cache/retro/`) without first asking the user for approval. Skill mutations are gated. Writing to memory files and settings.json is assertive (automatic).
+Do NOT update any skill files (including any files under the retro plugin directory) without first asking the user for approval. Skill mutations are gated. Writing to memory files and settings.json is assertive (automatic).
 
 ## Process
 
@@ -25,7 +25,7 @@ Review the full conversation: all tool calls made, files edited, decisions taken
 
 ### Step 2: Run rubric analysis
 
-Read `~/.claude/plugins/cache/retro/1.0.0/shared/analysis-rubric.md`. Evaluate each of the 17 categories against the session evidence. For each finding assign:
+Read the rubric at `../../shared/analysis-rubric.md` relative to this skill's base directory (shown at the top of this skill when loaded). Evaluate each of the 17 categories against the session evidence. For each finding assign:
 
 - **Confidence:** high (clear evidence), medium (pattern suggested), low (possible but uncertain)
 - **Impact:** high (will affect future sessions repeatedly), medium (occasional), low (one-off)
@@ -81,7 +81,7 @@ Check `MEMORY.md` first — update existing entries rather than duplicating.
 ASK BEFORE applying any of these:
 
 - Creating a new skill file
-- Editing any existing skill file (including files under `~/.claude/plugins/cache/retro/`)
+- Editing any existing skill file (including any files under the retro plugin directory)
 - Deleting or overriding an existing memory or rule
 - Adding a hook event type not currently in `settings.json`
 

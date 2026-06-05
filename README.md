@@ -19,9 +19,12 @@ Session retrospective skill for Claude Code. Captures behavioral patterns, write
 
 ## Installation
 
-1. This directory is already in `~/.claude/plugins/cache/retro/1.0.0/`
-2. Merge hooks from `hooks/hooks.json` into `~/.claude/settings.json` (see Task 10 of implementation plan)
-3. Run `/retro` to verify the full skill works
+```sh
+claude plugin marketplace add so0osh github:so0osh/claude-plugin-retro
+claude plugin install retro@so0osh
+```
+
+The PreCompact and Stop hooks bundled in `hooks/hooks.json` need to be merged into `~/.claude/settings.json` manually after install. Run `/retro` to verify everything is working.
 
 ## When to run /retro
 
@@ -34,6 +37,3 @@ Session retrospective skill for Claude Code. Captures behavioral patterns, write
 
 Add detection categories by editing `shared/analysis-rubric.md`. Each entry needs: what to look for, positive form, negative form, output type.
 
-## Marketplace
-
-Designed for `claude-plugins-official/retro`. Spec: `docs/superpowers/specs/2026-06-05-retro-design.md`.
