@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -NoProfile -Command \"Write-Output '{\\\"systemMessage\\\": \\\"Invoke the retro-quick skill to capture pre-compaction signals before context compression.\\\"}'\"",
+            "async": false
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -NoProfile -Command \"Write-Output '{\\\"systemMessage\\\": \\\"Session ending. Consider running /retro to capture and endorse insights from this session.\\\"}'\"",
+            "async": false
+          }
+        ]
+      }
+    ]
+  }
+}

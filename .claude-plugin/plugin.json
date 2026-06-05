@@ -1,0 +1,17 @@
+{
+  "name": "retro",
+  "description": "Session retrospective skill for self-improvement — captures behavioral patterns, writes memories, and enforces rules from each session",
+  "version": "1.0.0",
+  "author": {
+    "email": "gold.isr13@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "retrospective",
+    "self-improvement",
+    "memory",
+    "behavioral-patterns",
+    "hooks",
+    "audit"
+  ]
+}
