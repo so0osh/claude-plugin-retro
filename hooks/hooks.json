@@ -11,18 +11,6 @@
           }
         ]
       }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "pwsh -NoProfile -Command \"Write-Output '{\\\"systemMessage\\\": \\\"Session ending. Consider running /retro to capture and endorse insights from this session.\\\"}'\"",
-            "async": false
-          }
-        ]
-      }
     ]
   }
 }

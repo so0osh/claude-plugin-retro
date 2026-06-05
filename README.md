@@ -40,7 +40,6 @@ Restart Claude Code after installation for the hooks to take effect.
 |---|---|---|
 | `/retro` | `retro` | End of day, after a major delivery, after a long debug session |
 | Automatic | `retro-quick` | Fires via `PreCompact` hook before context compression |
-| Automatic | reminder | `Stop` hook suggests `/retro` when a session ends |
 
 ## What's Inside
 
