@@ -2,6 +2,7 @@
   "name": "retro",
   "description": "Session retrospective skills for Claude Code — self-improvement through recall, recap, and behavioral pattern enforcement",
   "owner": {
+    "name": "so0osh",
     "email": "gold.isr13@gmail.com"
   },
   "plugins": [
@@ -11,6 +12,7 @@
       "version": "1.0.0",
       "source": "./",
       "author": {
+        "name": "so0osh",
         "email": "gold.isr13@gmail.com"
       }
     }
