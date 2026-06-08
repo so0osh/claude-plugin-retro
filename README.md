@@ -10,7 +10,7 @@ Install for [Claude Code](#claude-code).
 
 At the end of a session, run `/retro`. The agent reviews the full conversation against 17 behavioral categories, triages findings by severity, and immediately acts on high-confidence ones: writing memory files, updating settings rules, reinforcing positive patterns. Structural changes (new skills, deleted rules) require your approval first. Everything gets logged to `~/.claude/retro-log.md` so you can track trends across sessions.
 
-Before context is compressed, a lightweight hook fires automatically. It captures ephemeral signals — decisions made, corrections given, intent clarifications — that would be lost after compaction, and writes them to memory without interrupting you.
+Compaction is handled in two stages so nothing is lost to timing. Before context is compressed, a `PreCompact` hook snapshots the full transcript to disk. After compaction completes, a `SessionStart` hook points the agent at that snapshot and the lightweight `retro-quick` skill captures ephemeral signals — decisions made, corrections given, intent clarifications — into memory without interrupting you.
 
 Over time, retro builds up a picture of how you and your agent work best together. Good behaviors get reinforced. Bad patterns get flagged and blocked. The agent gets better at the things that matter to you specifically.
 
@@ -39,7 +39,7 @@ Restart Claude Code after installation for the hooks to take effect.
 | Trigger | Skill | When |
 |---|---|---|
 | `/retro` | `retro` | End of day, after a major delivery, after a long debug session |
-| Automatic | `retro-quick` | Fires via `PreCompact` hook before context compression |
+| Automatic | `retro-quick` | Snapshots on `PreCompact`, captured via `SessionStart` after compaction |
 
 ## What's Inside
 
@@ -47,7 +47,7 @@ Restart Claude Code after installation for the hooks to take effect.
 
 **retro** — Full on-demand retrospective. Scans the session, presents triaged findings, writes memories and settings updates assertively, gates structural changes behind your approval, appends a dated entry to the audit log.
 
-**retro-quick** — Lightweight pre-compaction capture. Runs automatically before context is compressed. Preserves ephemeral signals (corrections, decisions, intent clarifications) into memory without any user interaction.
+**retro-quick** — Lightweight pre-compaction capture. The `PreCompact` hook snapshots the transcript before compression; after compaction the `SessionStart` hook hands the snapshot to this skill, which preserves ephemeral signals (corrections, decisions, intent clarifications) into memory without any user interaction.
 
 ### Analysis Rubric
 
