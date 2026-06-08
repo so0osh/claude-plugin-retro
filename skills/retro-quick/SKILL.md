@@ -7,15 +7,25 @@ description: Use when pre-compaction hook fires or context compression is about 
 
 ## Overview
 
-Lightweight automated capture of high-value session signals before context compaction erases them. No analysis, no triage, no user interaction — write memory files and log, then stop.
+Lightweight automated capture of high-value session signals from a transcript snapshot taken just before context compaction. No analysis, no triage, no user interaction — read the snapshot, write memory files, log, delete the snapshot, then stop.
 
 ## When Invoked
 
-Triggered by the `PreCompact` hook before context compression. Do NOT invoke manually — use `/retro` for deliberate retrospectives.
+Triggered automatically after compaction by the `SessionStart` hook (matcher `compact`), which injects a snapshot path into context. The flow is:
+
+1. **`PreCompact` hook** copies the full transcript to `~/.claude/retro-pending/<session_id>.jsonl` before compaction condenses it.
+2. **`SessionStart` hook (matcher `compact`)** runs after compaction and injects context: *"A pre-compaction transcript snapshot was saved... Snapshot path: `<path>`."*
+3. **This skill** reads that snapshot, captures signals, writes memories, deletes the snapshot.
+
+The injected context contains the exact snapshot path. Do NOT invoke this skill manually — use `/retro` for deliberate retrospectives.
 
 ## CRITICAL: This is a write task, not a conversation task
 
-Do NOT describe what you would save. Do NOT ask for confirmation. DO write the files immediately.
+Do NOT describe what you would save. Do NOT ask for confirmation. DO read the snapshot and write the files immediately.
+
+## CRITICAL: Read the snapshot, not the live session
+
+The live session has already been compacted — the ephemeral signals are gone from your context. The full pre-compaction history lives in the snapshot file whose path was injected by the SessionStart hook. **Read that file.** Do not try to reconstruct signals from your compacted context.
 
 ## CRITICAL: Write to the memory system, not a project file
 
@@ -27,11 +37,17 @@ The memory path on Windows resolves to `C:\Users\<user>\.claude\projects\<encode
 
 ## Process
 
-Run all four steps immediately, in order, without interruption or user interaction.
+Run all steps immediately, in order, without interruption or user interaction.
+
+### Step 0: Read the snapshot
+
+Find the snapshot path in the injected SessionStart context (`Snapshot path: ...`). Read that `.jsonl` file — it is the full pre-compaction conversation transcript, one JSON object per line. This is your source for all signals below.
+
+If no snapshot path is present in context, or the file does not exist, there is nothing to capture — stop.
 
 ### Step 1: Identify ephemeral signals
 
-Scan the current session for signals that will NOT survive compaction:
+Scan the snapshot transcript for signals that did NOT survive compaction:
 
 - Explicit corrections the user gave you ("don't do X", "I meant Y")
 - Decisions made and their reasons ("chose A because B")
@@ -82,7 +98,11 @@ Prepend this block to `~/.claude/retro-log.md` (create file if it doesn't exist,
 
 Replace YYYY-MM-DD HH:MM with the actual current timestamp.
 
-### Step 4: Stop
+### Step 4: Delete the snapshot
+
+Delete the snapshot file you read in Step 0 (`~/.claude/retro-pending/<session_id>.jsonl`). It has served its purpose; leaving it would cause re-processing on the next compaction.
+
+### Step 5: Stop
 
 Do not perform full analysis, settings mutations, or structural changes. Those belong to `/retro`.
 
@@ -90,9 +110,11 @@ Do not perform full analysis, settings mutations, or structural changes. Those b
 
 | If you're about to do this | Stop. Do this instead. |
 |---|---|
+| Reconstruct signals from compacted context | Read the snapshot file at the injected path |
 | Write a `session-notes.md` file | Write a memory file in `~/.claude/projects/.../memory/` |
 | Write to any project directory file | Write to the memory system |
 | "I'll note this for later" without writing | Write the memory file now |
 | "I should ask the user first" | This is automatic and non-interactive — just write |
 | "There's nothing to capture" | Check all signal types in Step 1 before concluding this |
 | Describe what you saved without writing files | Use the Write tool to actually write the files |
+| Leave the snapshot in place | Delete it in Step 4 after writing memories |

@@ -6,7 +6,19 @@
         "hooks": [
           {
             "type": "command",
-            "command": "pwsh -NoProfile -Command \"Write-Output '{\\\"systemMessage\\\": \\\"Invoke the retro-quick skill to capture pre-compaction signals before context compression.\\\"}'\"",
+            "command": "pwsh -NoProfile -File \"${CLAUDE_PLUGIN_ROOT}/hooks/snapshot-session.ps1\"",
+            "async": false
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -NoProfile -File \"${CLAUDE_PLUGIN_ROOT}/hooks/emit-retro-context.ps1\"",
             "async": false
           }
         ]
